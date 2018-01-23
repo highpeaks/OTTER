@@ -7,16 +7,11 @@ var Twit = require('twit');
 var request = require('request');
 var fs = require('fs');
 
-var googleMapsClient = require('@google/maps').createClient({
-  key: 'AIzaSyClm4tJ3_TPxe5MrEbSUVg_QflhIzT-dwA'
-});
+var googleConfig = require("./data/googleConfig")
+var googleMapsClient = require('@google/maps').createClient(googleConfig);
 
-var T = new Twit({
-  consumer_key:         '9TE3FlzVjLaIotoo5290hhrt3',
-  consumer_secret:      'I6TtEzjFEi1opX4dliyUR989OkIGrEdFzGZ5xrVsoeHoBnEZcK',
-  access_token:         '899964182745026560-ecNAjNRAYbSTYGCDE3FgSZi728nI98j',
-  access_token_secret:  'rCmlqjgdhtkG6hltYHfTRyADR8BREFk2LcYEQHvkh6V14'
-})
+var twitConfig = require("./data/twitConfig")
+var T = new Twit(twitConfig);
 
 setInterval(coordPoll, 15 * 1000);
 // setTimeout(coordPoll, 1000);
@@ -34,13 +29,13 @@ function coordPoll(){
       latlng: issLat + "," + issLon,
       result_type: "administrative_area_level_1"
       }, function(err, response) {
-        console.log(response.json.results);
+        if (response.json.results > 0){
           let place = JSON.stringify(response.json.results[0].formatted_address);
           fs.writeFile('public/place.json', place);
-        // } else {
-        //   let place = JSON.stringify("");
-        //   fs.writeFile('public/place.json', place);
-        // }
+        } else {
+          let place = JSON.stringify("");
+          fs.writeFile('public/place.json', place);
+        }
       });
 
 
