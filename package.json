@@ -1,7 +1,7 @@
 {
-  "name": "aura",
+  "name": "otter",
   "version": "1.0.0",
-  "description": "iss bot",
+  "description": "orbital twitter traffic controller and repeater",
   "main": "p5.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,6 +9,26 @@
   "author": "darek bittner",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.2"
-  }
+    "@google/maps": "^0.4.5",
+    "express": "^4.16.2",
+    "twit": "^2.2.9"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/highpeaks/OTTER.git"
+  },
+  "keywords": [
+    "otter",
+    "orbital",
+    "twitter",
+    "traffic",
+    "explorer",
+    "and",
+    "repeater"
+  ],
+  "bugs": {
+    "url": "https://github.com/highpeaks/OTTER/issues"
+  },
+  "homepage": "https://github.com/highpeaks/OTTER#readme"
 }
