@@ -2,25 +2,48 @@
 
 var paragraphs = [];
 var place;
-
+var rlat, rlon;
 
 function setup(){
-	noCanvas();
+	var c = createCanvas(400,400, WEBGL);
+	c.parent("tweets");
+
 	refresh();
 	setInterval(refresh, 15 * 1000);
-	for (let i = 0; i < 50; i++){
-		let p = createP("");
-		p.parent("dynamic")
-		paragraphs.push(p);
-	}
+
 	place = createElement("h3","");
 	place.parent("place");
+
+	for (let i = 0; i < 50; i++){
+		let p = createP("");
+		p.parent("tweets")
+		paragraphs.push(p);
+	}
 }
 
 
+
+function draw(){
+	background(255);
+
+	let r = 100;
+
+	let lat = map(rlat, -90, 90, -HALF_PI, HALF_PI);
+	let lon = map(rlon, -180, 180, -PI, PI);
+
+	let x = r * sin(lon) * cos(lat);
+	let y = r * sin(lon) * sin(lat);
+	let z = r * cos(lon);
+
+	sphere(100);
+	translate(x,y,z);
+	sphere(5);
+}
+
 function refresh(){
 	loadJSON('tweets.json', gotTweets);
-	loadJSON('place.json', gotPlace);
+	loadJSON('latlon.json', gotLatLon);
+	loadJSON('placeName.json', gotPlace);
 }
 
 function gotTweets(data){
@@ -34,4 +57,11 @@ function gotTweets(data){
 
 function gotPlace(data){
 	place.html(data);
+}
+
+function gotLatLon(data){
+	let refreshLatLon = data.split(",");
+	rlat = refreshLatLon[0];
+	rlon = refreshLatLon[1];
+
 }

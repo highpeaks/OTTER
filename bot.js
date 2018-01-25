@@ -7,10 +7,10 @@ var Twit = require('twit');
 var request = require('request');
 var fs = require('fs');
 
-var googleConfig = require("./data/googleConfig")
+var googleConfig = require("./data/googleConfig");
 var googleMapsClient = require('@google/maps').createClient(googleConfig);
 
-var twitConfig = require("./data/twitConfig")
+var twitConfig = require("./data/twitConfig");
 var T = new Twit(twitConfig);
 
 setInterval(coordPoll, 15 * 1000);
@@ -19,22 +19,28 @@ setInterval(coordPoll, 15 * 1000);
 function coordPoll(){
   request('http://api.open-notify.org/iss-now.json', { json: true }, (err, res, body) => {
     if (err) { return console.log(err); }
-    let issLon = JSON.parse(body.iss_position.longitude);
-    let issLat = JSON.parse(body.iss_position.latitude);
+    let issLon = body.iss_position.longitude;
+    let issLat = body.iss_position.latitude;
+    let latlon = JSON.stringify(issLat + "," + issLon);
+    fs.writeFile('public/latlon.json', latlon);
+
+    issLon = JSON.parse(body.iss_position.longitude);
+    issLat = JSON.parse(body.iss_position.latitude);
     let rad = "100mi";
     let query = "geocode:" + issLat + "," + issLon + "," + rad + " -from:googuns_lulz -from:_grammar_";
+    // fs.writeFile('public/latlon.json', latlon);
 
 
     googleMapsClient.reverseGeocode({
       latlng: issLat + "," + issLon,
       result_type: "administrative_area_level_1"
       }, function(err, response) {
-        if (response.json.results > 0){
+        if (response.json.results.length > 0){
           let place = JSON.stringify(response.json.results[0].formatted_address);
-          fs.writeFile('public/place.json', place);
+          fs.writeFile('public/placeName.json', place);
         } else {
           let place = JSON.stringify("");
-          fs.writeFile('public/place.json', place);
+          fs.writeFile('public/placeName.json', place);
         }
       });
 
