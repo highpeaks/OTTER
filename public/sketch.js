@@ -4,7 +4,7 @@ var paragraphs = [];
 var place;
 
 function preload(){
-	img = loadImage("https://eoimages.gsfc.nasa.gov/images/imagerecords/74000/74142/world.200409.3x5400x2700.jpg");
+	img = loadImage("world.200409.3x5400x2700.jpg");
 }
 
 function setup() {
