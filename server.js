@@ -27,7 +27,7 @@ function coordPoll(){
     let issLon = body.iss_position.longitude;
     let issLat = body.iss_position.latitude;
     let latlon = JSON.stringify(issLat + "," + issLon);
-    fs.writeFile('public/latlon.json', latlon);
+    fs.writeFile('public/json/latlon.json', latlon);
 
     issLon = JSON.parse(body.iss_position.longitude);
     issLat = JSON.parse(body.iss_position.latitude);
