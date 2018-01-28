@@ -28,7 +28,7 @@ function coordPoll(){
     issLat = JSON.parse(body.iss_position.latitude);
     let rad = "100mi";
     let query = "geocode:" + issLat + "," + issLon + "," + rad + " -from:googuns_lulz -from:_grammar_";
-    // fs.writeFile('public/latlon.json', latlon);
+    fs.writeFile('public/latlon.json', latlon);
 
 
     googleMapsClient.reverseGeocode({
