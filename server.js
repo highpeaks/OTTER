@@ -1,7 +1,12 @@
 var express = require('express');
 var app = express();
-var server = app.listen(3000);
-app.use(express.static('public'));
+
+var port = process.env.PORT || 8080;
+app.use(express.static(__dirname + '/public'));
+
+app.listen(port, function() {
+    console.log('Our app is running on http://localhost:' + port);
+});
 
 var Twit = require('twit');
 var request = require('request');
@@ -28,7 +33,7 @@ function coordPoll(){
     issLat = JSON.parse(body.iss_position.latitude);
     let rad = "100mi";
     let query = "geocode:" + issLat + "," + issLon + "," + rad + " -from:googuns_lulz -from:_grammar_";
-    fs.writeFile('public/latlon.json', latlon);
+    fs.writeFile('public/json/latlon.json', latlon);
 
 
     googleMapsClient.reverseGeocode({
@@ -37,10 +42,10 @@ function coordPoll(){
       }, function(err, response) {
         if (response.json.results.length > 0){
           let place = JSON.stringify(response.json.results[0].formatted_address);
-          fs.writeFile('public/placeName.json', place);
+          fs.writeFile('public/json/placeName.json', place);
         } else {
           let place = JSON.stringify("");
-          fs.writeFile('public/placeName.json', place);
+          fs.writeFile('public/json/placeName.json', place);
         }
       });
 
@@ -58,7 +63,7 @@ function coordPoll(){
         tweets.push('Quiet on the Surface');
       }
       let json = JSON.stringify(tweets);
-      fs.writeFile('public/tweets.json', json);
+      fs.writeFile('public/json/tweets.json', json);
     })
   })
 }
