@@ -29,6 +29,7 @@ function setup() {
 function draw() {
 
   background(255);
+  ambientLight(255);
 
 	if (frameCount <= 100){
 		let d = map(sin((frameCount/200)*TAU),-1,1,1,4);
