@@ -8,9 +8,9 @@ function preload(){
 }
 
 function setup() {
+  pixelDensity(1);
   var c = createCanvas(windowWidth/4, windowWidth/4, WEBGL);
 	c.parent("map");
-// 	pixelDensity(1);
 
 	gui = createGraphics(100,100);
 
