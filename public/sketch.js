@@ -8,7 +8,8 @@ function preload(){
 }
 
 function setup() {
-  pixelDensity(1);
+  var density = displayDensity();
+  pixelDensity(density);
   var c = createCanvas(windowWidth/4, windowWidth/4, WEBGL);
 	c.parent("map");
 
