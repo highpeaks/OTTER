@@ -4,7 +4,7 @@ var paragraphs = [];
 var place;
 
 function preload(){
-	img = loadImage("world.200409.3x5400x2700.jpg");
+	img = loadImage("worldtex.jpg");
 }
 
 function setup() {
