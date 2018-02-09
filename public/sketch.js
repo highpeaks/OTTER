@@ -18,7 +18,7 @@ function setup() {
 
 	for (let i = 0; i < 50; i++){
 		let p = createP("");
-		p.parent("tweets")
+		p.parent("tweets");
 		paragraphs.push(p);
 	}
 	refresh();
