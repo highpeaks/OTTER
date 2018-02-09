@@ -1,4 +1,4 @@
-var x, y, z, img, lat, lon, gui;
+var x, y, z, img, lat, lon;
 
 var paragraphs = [];
 var place;
@@ -12,8 +12,6 @@ function setup() {
   pixelDensity(density);
   var c = createCanvas(windowWidth/4, windowWidth/4, WEBGL);
 	c.parent("map");
-
-	gui = createGraphics(100,100);
 
 	place = createElement("h3","");
 	place.parent("place");
