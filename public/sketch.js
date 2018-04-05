@@ -22,7 +22,7 @@ function setup() {
 		paragraphs.push(p);
 	}
 	refresh();
-	setInterval(refresh, 5 * 1000);
+	setInterval(refresh, 10 * 1000);
 }
 
 function draw() {
