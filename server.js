@@ -18,8 +18,7 @@ var googleMapsClient = require('@google/maps').createClient(googleConfig);
 var twitConfig = require("./data/twitConfig");
 var T = new Twit(twitConfig);
 
-setInterval(coordPoll, 15 * 1000);
-setTimeout(coordPoll, 1000);
+setInterval(coordPoll, 5 * 1000);
 
 function coordPoll(){
   request('http://api.open-notify.org/iss-now.json', { json: true }, (err, res, body) => {
