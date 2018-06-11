@@ -3,26 +3,31 @@ var x, y, z, img, lat, lon;
 var paragraphs = [];
 var place;
 
+
 function preload(){
-	img = loadImage("worldtex.jpg");
+	img = loadImage('worldtex.jpg');
 }
 
 function setup() {
+
   var density = displayDensity();
   pixelDensity(density);
   var c = createCanvas(windowWidth/4, windowWidth/4, WEBGL);
-	c.parent("map");
+	c.parent('map');
 
-	place = createElement("h3","");
-	place.parent("place");
+	place = createElement('h3','');
+	place.parent('body');
 
 	for (let i = 0; i < 50; i++){
-		let p = createP("");
-		p.parent("tweets");
+		let p = createP('');
+		p.parent('body');
 		paragraphs.push(p);
 	}
+
 	refresh();
-	setInterval(refresh, 10 * 1000);
+
+	setInterval(refresh, 1000 * 7);
+
 }
 
 function draw() {
@@ -31,11 +36,12 @@ function draw() {
   ambientLight(255);
 
 	if (frameCount <= 100){
+
 		let d = map(sin((frameCount/200)*TAU),-1,1,1,4);
 		sphere(d);
-	}
 
-	if (frameCount > 100){
+	} else{
+
 		rotateY(PI);
 		rotateX(lat);
 		rotateY(lon * -1);
@@ -50,51 +56,34 @@ function draw() {
 	}
 }
 
-// function refresh() {
-//   loadJSON("http://api.open-notify.org/iss-now.json", plotCoord);
-//   function plotCoord(data) {
-//     let issLat = data.iss_position.latitude;
-//     let issLon = data.iss_position.longitude;
-//     let r = 150;
-//     lat = radians(issLat);
-//     lon = radians(issLon);
-//     x = r * cos(lat) * sin(lon + radians(180));
-//     y = r * 1.0625 * sin(-lat);
-//     z = r * cos(lat) * cos(lon + radians(180));
-//   }
-// }
-
 function refresh(){
-	loadJSON('json/tweets.json', gotTweets);
-	loadJSON('json/latlon.json', gotLatLon);
-	loadJSON('json/placeName.json', gotPlace);
-}
 
-function gotTweets(data){
-	for (let i = 0; i < data.length; i++){
-		paragraphs[i].html(data[i]);
+	loadJSON('/coordpoll', gotCoord);
+
+	function gotCoord(data){
+
+		//tweets
+		for (let i = 0; i < data.tweets.length; i++){
+			paragraphs[i].html(data.tweets[i]);
+		}
+		for (let j = data.tweets.length; j < 50; j++){
+			paragraphs[j].html('');
+		}
+
+		// place name
+		place.html(data.loc[0]);
+
+		//rotate globe
+		let issLat = data.latlng[0];
+		let issLon = data.latlng[1];
+		let r = width/3;
+		lat = radians(issLat);
+		lon = radians(issLon);
+		x = r * cos(lat) * sin(lon + radians(180));
+		y = r * 1.0625 * sin(-lat);
+		z = r * cos(lat) * cos(lon + radians(180));
 	}
-	for (let j = data.length; j < 50; j++){
-		paragraphs[j].html("");
-	}
 }
-
-function gotPlace(data){
-	place.html(data);
-}
-
-function gotLatLon(data){
-	let coordSplit = data.split(",");
-	let issLat = coordSplit[0];
-  let issLon = coordSplit[1];
-  let r = width/3;
-  lat = radians(issLat);
-  lon = radians(issLon);
-  x = r * cos(lat) * sin(lon + radians(180));
-  y = r * 1.0625 * sin(-lat);
-  z = r * cos(lat) * cos(lon + radians(180));
-}
-
 
 function windowResized() {
   resizeCanvas(windowWidth/4, windowWidth/4);

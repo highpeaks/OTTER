@@ -11,44 +11,59 @@ app.listen(port, function() {
 var Twit = require('twit');
 var request = require('request');
 var fs = require('fs');
-
-var googleConfig = require("./data/googleConfig");
+var googleConfig = require('./data/googleConfig');
 var googleMapsClient = require('@google/maps').createClient(googleConfig);
-
-var twitConfig = require("./data/twitConfig");
+var twitConfig = require('./data/twitConfig');
 var T = new Twit(twitConfig);
 
-setInterval(coordPoll, 5 * 1000);
 
-function coordPoll(){
-  request('http://api.open-notify.org/iss-now.json', { json: true }, (err, res, body) => {
-    if (err) { return console.log(err); }
-    let issLon = body.iss_position.longitude;
-    let issLat = body.iss_position.latitude;
-    let latlon = JSON.stringify(issLat + "," + issLon);
-    fs.writeFile('public/json/latlon.json', latlon);
-
-    issLon = JSON.parse(body.iss_position.longitude);
-    issLat = JSON.parse(body.iss_position.latitude);
-    let rad = "100mi";
-    let query = "geocode:" + issLat + "," + issLon + "," + rad + " -from:googuns_lulz -from:_grammar_";
-    fs.writeFile('public/json/latlon.json', latlon);
+app.get('/coordpoll', coordPoll);
 
 
+function coordPoll(requ, resp){
+
+  let finalobj = {
+    tweets : [],
+    loc : [],
+    latlng : []
+  };
+
+  let issLat, issLon, query;
+  let counter = 0;
+
+  issquery(resp);
+
+  function issquery(resp){
+    request('http://api.open-notify.org/iss-now.json', { json: true }, (err, res, body) => {
+      issLat = JSON.parse(body.iss_position.latitude);
+      finalobj.latlng.push(issLat);
+      issLon = JSON.parse(body.iss_position.longitude);
+      finalobj.latlng.push(issLon);
+      query = 'geocode:' + issLat + ',' + issLon + ',' + '100mi' + ' -from:googuns_lulz -from:_grammar_';
+      geocodeQuery(resp);
+      twitterQuery(resp);
+    });
+  }
+
+  function geocodeQuery(resp){
     googleMapsClient.reverseGeocode({
-      latlng: issLat + "," + issLon,
-      result_type: "administrative_area_level_1"
+      latlng: issLat + ',' + issLon,
+      result_type: 'administrative_area_level_1'
       }, function(err, response) {
         if (response.json.results.length > 0){
-          let place = JSON.stringify(response.json.results[0].formatted_address);
-          fs.writeFile('public/json/placeName.json', place);
+          finalobj.loc.push(response.json.results[0].formatted_address);
         } else {
-          let place = JSON.stringify("");
-          fs.writeFile('public/json/placeName.json', place);
+          finalobj.loc.push(issLat + ',' + issLon);
         }
-      });
+        counter++;
+        if (counter == 2){
+          gotdata(resp);
+        }
+      }
+    );
+  }
 
-
+  function twitterQuery(resp){
     T.get('search/tweets', {
       q: query,
       count: 50
@@ -56,13 +71,20 @@ function coordPoll(){
       let tweets = [];
       if (data.statuses.length > 0){
         for (let i = 0; i < data.statuses.length; i++){
-        tweets.push(data.statuses[i].user.screen_name + ": " + data.statuses[i].text);
+          tweets.push(data.statuses[i].user.screen_name + ': ' + data.statuses[i].text);
         }
       } else {
         tweets.push('Quiet on the Surface');
       }
-      let json = JSON.stringify(tweets);
-      fs.writeFile('public/json/tweets.json', json);
-    })
-  })
+      finalobj.tweets.push(tweets);
+      counter++;
+      if (counter == 2){
+        gotdata(resp);
+      }
+    });
+  }
+
+  function gotdata(resp){
+    resp.json(finalobj);
+  }
 }
