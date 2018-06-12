@@ -23,9 +23,9 @@ app.get('/coordpoll', coordPoll);
 function coordPoll(requ, resp){
 
   let finalobj = {
-    tweets : [],
-    loc : [],
-    latlng : []
+    tweets: [],
+    loc: [],
+    latlng: []
   };
 
   let issLat, issLon, query;
@@ -66,17 +66,17 @@ function coordPoll(requ, resp){
   function twitterQuery(resp){
     T.get('search/tweets', {
       q: query,
+      result_type: 'recent',
       count: 50
     },function(err, data, response) {
       let tweets = [];
       if (data.statuses.length > 0){
         for (let i = 0; i < data.statuses.length; i++){
-          tweets.push(data.statuses[i].user.screen_name + ': ' + data.statuses[i].text);
+          finalobj.tweets.push(data.statuses[i].user.screen_name + ': ' + data.statuses[i].text);
         }
       } else {
-        tweets.push('Quiet on the Surface');
+        finalobj.tweets.push('Quiet on the Surface');
       }
-      finalobj.tweets.push(tweets);
       counter++;
       if (counter == 2){
         gotdata(resp);

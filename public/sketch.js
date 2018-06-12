@@ -3,7 +3,6 @@ var x, y, z, img, lat, lon;
 var paragraphs = [];
 var place;
 
-
 function preload(){
 	img = loadImage('worldtex.jpg');
 }
@@ -16,11 +15,11 @@ function setup() {
 	c.parent('map');
 
 	place = createElement('h3','');
-	place.parent('body');
+	place.parent('place');
 
 	for (let i = 0; i < 50; i++){
 		let p = createP('');
-		p.parent('body');
+		p.parent('tweets');
 		paragraphs.push(p);
 	}
 
@@ -61,7 +60,6 @@ function refresh(){
 	loadJSON('/coordpoll', gotCoord);
 
 	function gotCoord(data){
-
 		//tweets
 		for (let i = 0; i < data.tweets.length; i++){
 			paragraphs[i].html(data.tweets[i]);
