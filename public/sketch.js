@@ -14,7 +14,7 @@ function setup() {
   var c = createCanvas(windowWidth/4, windowWidth/4, WEBGL);
 	c.parent('map');
 
-	place = createElement('h3','');
+	place = createElement('h2');
 	place.parent('place');
 
 	for (let i = 0; i < 50; i++){
@@ -31,7 +31,7 @@ function setup() {
 
 function draw() {
 
-  background(255);
+  background(0,0,0,0);
   ambientLight(255);
 
 	if (frameCount <= 100){
@@ -46,7 +46,7 @@ function draw() {
 		rotateY(lon * -1);
 
 		texture(img);
-	  sphere(width/3);
+	  sphere(width/2.5);
 
 		translate(x, y, z);
 	  fill(204,0,51);
@@ -74,7 +74,7 @@ function refresh(){
 		//rotate globe
 		let issLat = data.latlng[0];
 		let issLon = data.latlng[1];
-		let r = width/3;
+		let r = width/2.5;
 		lat = radians(issLat);
 		lon = radians(issLon);
 		x = r * cos(lat) * sin(lon + radians(180));
