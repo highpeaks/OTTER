@@ -3,6 +3,7 @@ var x, y, z, img, lat, lon;
 var paragraphs = [];
 var place;
 
+
 function preload(){
 	img = loadImage('worldtex.jpg');
 }
@@ -30,7 +31,7 @@ function setup() {
 }
 
 function draw() {
-
+	
   background(0,0,0,0);
   ambientLight(255);
 

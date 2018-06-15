@@ -1,7 +1,7 @@
 html {
     height: 100%;
     background-size: cover;
-    background: rgba(2,5,20,255);
+    background: linear-gradient(to bottom right, rgba(2,5,20,255), rgba(2,5,35,255));
 }
 
 body{
