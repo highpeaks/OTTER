@@ -3,6 +3,8 @@ var x, y, z, img, lat, lon;
 var paragraphs = [];
 var place;
 
+var stars = [];
+
 
 function preload(){
 	img = loadImage('worldtex.jpg');
@@ -12,7 +14,7 @@ function setup() {
 
   var density = displayDensity();
   pixelDensity(density);
-  var c = createCanvas(windowWidth/4, windowWidth/4, WEBGL);
+  var c = createCanvas(windowWidth, windowHeight, WEBGL);
 	c.parent('map');
 
 	place = createElement('h2');
@@ -31,9 +33,11 @@ function setup() {
 }
 
 function draw() {
-	
+
   background(0,0,0,0);
-  ambientLight(255);
+
+	pointLight(255, 255, 255, width * 0.9, height * 0.6, 50);
+
 
 	if (frameCount <= 100){
 
@@ -47,11 +51,16 @@ function draw() {
 		rotateY(lon * -1);
 
 		texture(img);
-	  sphere(width/2.5);
+
+		if (width > height){
+			sphere(height/3);
+		} else {
+			sphere(width/3);
+		}
 
 		translate(x, y, z);
 	  fill(204,0,51);
-		let d = map(sin((frameCount/200)*TAU),-1,1,1,4);
+		let d = map(sin((frameCount/200)*TAU),-1,1,1,2);
 	  sphere(d);
 	}
 }
@@ -75,7 +84,15 @@ function refresh(){
 		//rotate globe
 		let issLat = data.latlng[0];
 		let issLon = data.latlng[1];
-		let r = width/2.5;
+
+		let r;
+
+		if (width > height){
+			r = height/3;
+		} else {
+			r = width/3;
+		}
+
 		lat = radians(issLat);
 		lon = radians(issLon);
 		x = r * cos(lat) * sin(lon + radians(180));
@@ -85,5 +102,5 @@ function refresh(){
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth/4, windowWidth/4);
+  resizeCanvas(windowWidth, windowHeight);
 }
