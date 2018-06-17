@@ -5,6 +5,7 @@ var place;
 
 var stars = [];
 
+var firstload = false;
 
 function preload(){
 	img = loadImage('worldtex.jpg');
@@ -25,8 +26,8 @@ function setup() {
 		p.parent('tweets');
 		paragraphs.push(p);
 	}
-
 	refresh();
+
 
 	setInterval(refresh, 1000 * 7);
 
@@ -35,27 +36,14 @@ function setup() {
 function draw() {
 
   background(0,0,0,0);
-	// ambientLight(255,255,255);
 	pointLight(255, 255, 255, -width/2, -height/4, 0);
 
-	// translate(width/-2,height/-4,0);
-	// fill(255,0,255);
-	// sphere(50);
-
-
-	if (frameCount <= 100){
-
-		let d = map(sin((frameCount/200)*TAU),-1,1,1,4);
-		sphere(d);
-
-	} else{
+	if (firstload){
 
 		rotateY(PI);
 		rotateX(lat);
 		rotateY(lon * -1);
-
 		texture(img);
-
 		sphere(height/2.45);
 
 		translate(x, y, z);
@@ -94,6 +82,8 @@ function refresh(){
 		x = r * cos(lat) * sin(lon + radians(180));
 		y = r * 1.0625 * sin(-lat);
 		z = r * cos(lat) * cos(lon + radians(180));
+
+		firstload = true;
 	}
 }
 
