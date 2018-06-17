@@ -14,7 +14,7 @@ function setup() {
 
   var density = displayDensity();
   pixelDensity(density);
-  var c = createCanvas(windowWidth, windowHeight, WEBGL);
+  var c = createCanvas(windowWidth * 0.4, windowWidth * 0.4, WEBGL);
 	c.parent('map');
 
 	place = createElement('h2');
@@ -35,8 +35,12 @@ function setup() {
 function draw() {
 
   background(0,0,0,0);
+	// ambientLight(255,255,255);
+	pointLight(255, 255, 255, -width/2, -height/4, 0);
 
-	pointLight(255, 255, 255, width * 0.9, height * 0.6, 50);
+	// translate(width/-2,height/-4,0);
+	// fill(255,0,255);
+	// sphere(50);
 
 
 	if (frameCount <= 100){
@@ -52,11 +56,7 @@ function draw() {
 
 		texture(img);
 
-		if (width > height){
-			sphere(height/3);
-		} else {
-			sphere(width/3);
-		}
+		sphere(height/2.45);
 
 		translate(x, y, z);
 	  fill(204,0,51);
@@ -87,11 +87,7 @@ function refresh(){
 
 		let r;
 
-		if (width > height){
-			r = height/3;
-		} else {
-			r = width/3;
-		}
+		r = height/2.45;
 
 		lat = radians(issLat);
 		lon = radians(issLon);
@@ -102,5 +98,5 @@ function refresh(){
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+  resizeCanvas(windowWidth * 0.4, windowWidth * 0.4);
 }
