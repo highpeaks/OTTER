@@ -21,7 +21,7 @@ function setup() {
 	place = createElement('h2');
 	place.parent('place');
 
-	for (let i = 0; i < 50; i++){
+	for (let i = 0; i < 10; i++){
 		let p = createP('');
 		p.parent('tweets');
 		paragraphs.push(p);
