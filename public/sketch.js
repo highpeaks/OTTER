@@ -62,7 +62,7 @@ function refresh(){
 		for (let i = 0; i < data.tweets.length; i++){
 			paragraphs[i].html(data.tweets[i]);
 		}
-		for (let j = data.tweets.length; j < 10; j++){
+		for (let j = data.tweets.length; j < 7; j++){
 			paragraphs[j].html('');
 		}
 
