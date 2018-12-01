@@ -67,7 +67,7 @@ function coordPoll(requ, resp){
     T.get('search/tweets', {
       q: query,
       result_type: 'recent',
-      count: 10
+      count: 7
     },function(err, data, response) {
       let tweets = [];
       if (data.statuses.length > 0){
